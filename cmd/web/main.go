@@ -10,9 +10,18 @@ func main() {
 
 	// Create a file server which serves files out of the "./ui/static" directory.
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	// Use the mux.Handle() function to register the file server as the handler for
-	// all URL paths that start with "/static/". For matching paths, we strip the
-	// "/static" prefix before the request reaches the file server.
+
+	/*
+		Why do we need to remove the prefix :
+
+		Suppose you have a file named "style.css" located at "./ui/static/css/style.css" on your server
+		filesystem. You want this file to be accessible via a web browser using the URL path "/static/css/style.css".
+
+		However, when you set up the file server, you tell it to serve files from the directory "./ui/static/".
+		This means that when a request comes in for "/static/css/style.css", the file server will look for the file
+		"./ui/static/static/css/style.css", which doesn't exist. The server is expecting the URL path to directly map
+		 to the file structure within the "./ui/static/" directory.
+	*/
 
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
