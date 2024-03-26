@@ -9,9 +9,16 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
 	// note that the file containing our base template must be the *first*// file in the slice.
 	files := []string{
 		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
 		"./ui/html/pages/home.html",
 	}
 
